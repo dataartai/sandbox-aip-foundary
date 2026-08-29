@@ -1,0 +1,24 @@
+# 자격증명 — 절대 커밋 금지
+.env
+*.token
+*.pem
+foundry_token*
+
+# 내부 전용 — 공개 저장소에 올리지 않음
+ROADMAP.md
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# tooling state
+.omc/
+
+# OS
+Thumbs.db
+desktop.ini

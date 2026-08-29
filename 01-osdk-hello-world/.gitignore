@@ -1,0 +1,22 @@
+# 자격증명 — 절대 커밋 금지
+.env
+*.token
+*.pem
+foundry_token*
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS
+Thumbs.db
+desktop.ini
+
+# tooling state
+.omc/

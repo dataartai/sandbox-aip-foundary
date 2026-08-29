@@ -77,13 +77,13 @@ D:\OneDrive\Cursorhome\aip-practice\
     ├── PLAN.md                             # 이 문서 — 정본 계획서
     ├── NOTES.md                            # 진행 체크리스트 + 채워넣을 정보표 + 함정
     ├── CLAUDE.md                           # 이 실습 고유 컨텍스트
-    ├── notebook.ipynb                      # 원본 복사, TODO 4곳 채워서 사용
+    ├── notebook.ipynb                      # ✅ 완주됨 — SDK명 osdk_hello_world_app_sdk, 객체 ExampleAirport, 커스텀 Auth 구현 포함
     ├── run-jupyter.ps1                     # _shared\.env → .env 순 주입 후 jupyter lab
     ├── .env                                # FOUNDRY_TOKEN (git 추적 제외)
     ├── .env.example
     ├── .gitignore
     ├── README-original.md                  # 원본 README 사본
-    └── OSDK in Local Jupyter Notebook.zip  # Foundry 마켓플레이스 업로드용 패키지
+    └── OSDK in Local Jupyter Notebook.zip  # Foundry 마켓플레이스 업로드용 패키지 [실제: 이 엔롤먼트에서 설치 자체가 차단됨 — 사용 안 함, 아래 참고]
 ```
 
 원본 레포는 건드리지 않는다(읽기 전용 참고). 공통 규칙은 상위 `aip-practice/CLAUDE.md` 참조.
@@ -109,13 +109,13 @@ D:\OneDrive\Cursorhome\aip-practice\
 
 ---
 
-## Phase 2 — Foundry 웹 콘솔 (사용자 계정 보유 확인됨)
+## Phase 2 — Foundry 웹 콘솔 (원안 — 정정 사항은 [실제: ...]로 인라인 표기)
 
 README(`OSDK 'Hello World' Project/README.md:10-58`) 순서 그대로:
 
 1. **마켓플레이스 업로드** — `{enrollment-url}/workspace/marketplace` → 스토어 선택/생성 → `Upload to Store` → `OSDK in Local Jupyter Notebook.zip` 업로드.
 2. **패키지 설치** — General Setup(이름·위치) → Input(입력 없음, 통과) → Content Review(Ontology·Developer Console·Functions 확인) → Validation → Install.
-   - 여기서 **To Do Application**과 `OSDK Task` 온톨로지 객체가 생긴다.
+   - 여기서 **To Do Application**과 `OSDK Task` 온톨로지 객체가 생긴다. **[실제: 여기까지 도달 못 함 — 번들 속 앱이 폐기 포맷이라 `Install` 자체가 차단됨. 기존 객체 `ExampleAirport` 재사용으로 대체했다. 상세는 `NOTES.md` 참고.]**
 3. **Developer Console 애플리케이션 생성**
    - 새로 생긴 **`OSDK Task` 객체를 import**
    - Application type: **Client facing application**
@@ -126,7 +126,7 @@ README(`OSDK 'Hello World' Project/README.md:10-58`) 순서 그대로:
 
 ---
 
-## Phase 3 — 로컬 연결 및 노트북 실행
+## Phase 3 — 로컬 연결 및 노트북 실행 (원안 — 정정 사항은 [실제: ...]로 인라인 표기)
 
 1. **SDK 설치** — `conda activate osdk-hello`(env 활성화만 conda, 패키지 설치는 **pip**) 후 SDK versions 탭에서 복사한 pip 명령 실행.
 2. **토큰 설정** — `Start Developing`이 준 토큰을 `.env`에 저장하고, 노트북 실행 전 환경변수로 주입.
@@ -138,30 +138,32 @@ README(`OSDK 'Hello World' Project/README.md:10-58`) 순서 그대로:
    | 셀 1 `from my_todo_application_sdk import FoundryClient` | Phase 2-4 에서 기록한 실제 SDK 패키지명 |
    | 셀 2 `primaryKey = ...` | 셀 1 `take(1)` 출력에서 읽은 실제 PK |
 
-4. **실행 순서** — `take(1)`을 먼저 돌려 PK를 눈으로 확인한 뒤 `primaryKey`를 채우고 `.get()` → `result.description` 출력까지.
+   **[실제: "빈칸 2곳 채우기"보다 훨씬 컸다.** SDK generator 2.231.0엔 튜토리얼이 쓰는 `UserTokenAuth` 클래스 자체가 없어서, 셀 1에 `Auth`/`Token` 추상 클래스 커스텀 구현(`StaticTokenAuth`)을 통째로 새로 써야 했다 — 세 번째 관문이었고 이 표엔 안 적혀 있었다. 상세는 `NOTES.md` 함정 4번.]
+
+4. **실행 순서** — `take(1)`을 먼저 돌려 PK를 눈으로 확인한 뒤 `primaryKey`를 채우고 `.get()` → `result.description` 출력까지. **[실제: 최종 코드는 `result.display_airport_name` → `'The Eastern Iowa'`. `description`이라는 속성 자체가 이 객체엔 없다.]**
 
 ---
 
-## 함정 / 미리 알아둘 것
+## 함정 / 미리 알아둘 것 (원안 — 정정 사항은 [실제: ...]로 인라인 표기)
 
 - **Foundry 내장 Jupyter에서는 안 된다.** Developer Console이 생성한 OSDK는 Foundry 내장 노트북에서 바로 못 쓴다. 로컬 노트북이 전제이며, README가 이를 향후 개선 희망사항으로 적어뒀다(`README.md:61-64`).
-- **CORS 설정은 이 노트북에는 불필요할 가능성이 높다.** README가 control panel에서 `http://localhost:8080` CORS 허용을 언급하지만, `notebook.ipynb`는 **`UserTokenAuth`(토큰 직접 주입)** 방식이라 브라우저 OAuth 리다이렉트를 타지 않는다(근거등급: 분석 — 노트북 코드 실측 기반). 401/403이 아니라 CORS 계열 오류가 실제로 뜰 때만 손댄다.
-- **객체 API 이름 표기 차이.** 노트북은 `client.ontology.objects.osdkTodoTask`를 쓴다. 설치 시 객체 API 이름이 다르게 잡히면 여기서 `AttributeError`가 난다 → Ontology Manager에서 실제 API name을 확인해 맞춘다.
+- **CORS 설정은 이 노트북에는 불필요할 가능성이 높다.** README가 control panel에서 `http://localhost:8080` CORS 허용을 언급하지만, `notebook.ipynb`는 고정 토큰을 직접 주입하는 방식이라 브라우저 OAuth 리다이렉트를 타지 않는다(근거등급: **추정** — 이 항목을 쓸 당시 실제 SDK를 받아보기 전이라 원본 튜토리얼 코드만 읽고 판단했다. 결론 자체는 나중에 맞는 것으로 확인됐지만, "분석"이라 표기한 건 과했다). 401/403이 아니라 CORS 계열 오류가 실제로 뜰 때만 손댄다. **[실제로 근거가 됐던 클래스명 `UserTokenAuth`는 SDK 2.231.0에 존재하지 않았다 — 결론은 맞았지만 든 근거는 틀렸다. 커스텀 `StaticTokenAuth`로 구현했다.]**
+- **객체 API 이름 표기 차이.** 노트북 원본은 `client.ontology.objects.osdkTodoTask`를 쓴다. 설치 시 객체 API 이름이 다르게 잡히면 여기서 `AttributeError`가 난다 → Ontology Manager에서 실제 API name을 확인해 맞춘다. **[실제 최종 코드는 `client.ontology.objects.ExampleAirport` — `osdkTodoTask`는 애초에 존재한 적 없는 객체(zip 설치 자체가 막혔으므로)다.]**
 - **패키지 zip은 Foundry에 올려야만 의미가 있다.** 로컬에서 압축을 풀어봐야 `manifest.json`과 바이너리 blob 하나뿐이고 읽을 코드가 없다.
 - **원본 레포에 커밋하지 않는다.** remote가 palantir 공식 저장소라 실수로 push할 대상이 아니다.
 
 ---
 
-## 검증 (end-to-end)
+## 검증 (end-to-end) (원안 — 정정 사항은 [실제: ...]로 인라인 표기)
 
 각 단계에서 다음이 통과해야 다음으로 넘어간다:
 
 1. `conda --version` → 버전 출력 (Phase 1)
 2. `conda activate osdk-hello && python -c "import jupyterlab; print('ok')"` → `ok` (Phase 1)
-3. Foundry 마켓플레이스에 패키지가 **Installed** 상태로 보이고, Ontology Manager에 `OSDK Task` 객체와 샘플 행이 존재 (Phase 2)
+3. Foundry 마켓플레이스에 패키지가 **Installed** 상태로 보이고, Ontology Manager에 `OSDK Task` 객체와 샘플 행이 존재 (Phase 2) **[실제: 달성 불가능한 기준으로 판명 — 이 zip은 설치 자체가 차단됨. 이 경로는 폐기됐다.]**
 4. `conda activate osdk-hello && python -c "import <sdk_package>; print('ok')"` → `ok` (Phase 3-1)
 5. `python -c "import os; print(bool(os.environ.get('FOUNDRY_TOKEN')))"` → `True` (Phase 3-2)
-6. **최종 성공 기준**: 노트북에서 `print(osdkTodoTaskObject.take(1))`이 실제 객체를 출력하고, `result.description`이 문자열을 반환.
+6. **최종 성공 기준**: 노트북에서 `print(osdkTodoTaskObject.take(1))`이 실제 객체를 출력하고, `result.description`이 문자열을 반환. **[실제 최종 코드: `exampleAirportObject.take(1)` → `result.display_airport_name` → `'The Eastern Iowa'`. `osdkTodoTaskObject`도 `result.description`도 실제로 쓰인 적 없다.]**
 
 실패 시 진단 순서: 인증(401/403) → 호스트명 오타 → SDK 패키지명/객체 API명 불일치(`AttributeError`) → PK 불일치(`None`/not found) → 네트워크·CORS.
 
@@ -173,4 +175,4 @@ README(`OSDK 'Hello World' Project/README.md:10-58`) 순서 그대로:
 - 노트북 골격: 같은 폴더 `notebook.ipynb`
 - 공식 영상 튜토리얼: https://www.youtube.com/watch?v=u-XusTktitU
 - 마켓플레이스 설치 문서: https://www.palantir.com/docs/foundry/marketplace/install-product
-- 다음 단계 추천 경로(레지스트리 가이드 기준): OSDK 'Hello World' → Peak Explorer 또는 Personal Finance 설치 → Media and Derived Properties
+- ~~다음 단계 추천 경로(레지스트리 가이드 기준): OSDK 'Hello World' → Peak Explorer 또는 Personal Finance 설치 → Media and Derived Properties~~ **[실제: 이 순서는 폐기됨. 최신 순서는 `../ROADMAP.md` §0.5(Palantir 지원 준비용 압축 트랙) 참조 — 다음은 Expense Reporting.]**

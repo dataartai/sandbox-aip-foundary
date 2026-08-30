@@ -22,4 +22,4 @@ desktop.ini
 .omc/
 
 # zip 정적 분석용으로 풀어놓은 마켓플레이스 패키지 내용물 (원본 zip만 추적, 해제본은 제외)
-expense_reporting/
+feedback_loop_evals/

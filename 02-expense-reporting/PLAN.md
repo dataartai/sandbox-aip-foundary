@@ -17,10 +17,10 @@
 | Phase | 상태 |
 |---|---|
 | **사전 점검** | ✅ 완료 — zip 로컬 스캔, 설치 차단 위험 없음 확인 |
-| **Phase 1 — 마켓플레이스 업로드·설치** | ⬜ 대기 |
-| **Phase 2 — Action Type 편집(README 필수 단계)** | ⬜ 대기 |
-| **Phase 3 — 개념 탐구(Ontology·Action·Function·Workshop 연결 확인)** | ⬜ 대기 |
-| **Phase 4 — 확장 연습(선택)** | ⬜ 대기 |
+| **Phase 1 — 마켓플레이스 업로드·설치** | ✅ 완료 (2026-08-30) |
+| **Phase 2 — Action Type 편집(README 필수 단계)** | ✅ 완료 (2026-08-30) |
+| **Phase 3 — 개념 탐구(Ontology·Action·Function·Workshop 연결 확인)** | ✅ 완료 (2026-08-30) — 상세는 `NOTES.md`·`../GLOSSARY.md` |
+| **Phase 4 — 확장 연습(선택)** | ⬜ 대기 (다음 세션에서 이어갈 것) |
 
 **사전 점검 결과** (`ROADMAP.md`에 기록된 전체 스캔의 일부, 근거등급: 실측):
 
@@ -71,13 +71,17 @@ D:\OneDrive\Cursorhome\aip-practice\
 
 ## Phase 1 — 마켓플레이스 업로드·설치
 
-01번에서 확립한 방식 그대로 진행합니다 (자세한 클릭 순서는 `01-osdk-hello-world/NOTES.md`의 "이번 실습에서 쓴 앱" 표 참고):
+01번은 zip이 막혀 이 흐름을 실제로 완주하지 못했습니다 — **Marketplace Getting Started Tutorial(2026-08-30 완주, `../ROADMAP.md` §3.5)이 훨씬 정확한 선례**이니 헷갈리면 그 경험을 기준으로 삼습니다.
 
 1. **DevOps** → 기존 스토어 `aip-practice-store` 재사용(Change store) → `New product` 옆 드롭다운 → **Upload to store** → `expense_reporting.zip` 업로드
-2. **Marketplace** → 방금 올린 제품 검색 → **Create new installations**
-3. 설치 위치(Project) 지정 — **이 실습 전용 새 Foundry 프로젝트**를 만들어 지정합니다(예: `02-expense-reporting`, Sandbox project). 01과 같은 이유로 실습마다 설치 산출물을 분리합니다.
-4. General → Input(있으면 확인, README상 명시된 필수 입력 없음) → Content Review → **Validation에서 `Install` 버튼이 활성화되는지 확인** → Install
+2. **Marketplace** → 우측 상단 **Search products...** 입력창에서 방금 올린 제품 검색(검색 전엔 버튼이 안 보임) → 결과 카드 화면 우측 상단 **Create new installations** 클릭 → 체크박스로 제품 선택 → 하단 **Create installation job draft**
+3. "Create installation job" 대화창에서:
+   - **Project**: `Generate new project` 클릭 → 이름은 폴더명과 맞춰 `02-expense-reporting`(01과 같은 이유로 실습마다 설치 산출물 분리)
+   - **"Project locking recommended" 경고는 무시**하고 넘어가도 됨(개인 학습용, 프로덕션 아님)
+   - **Create**
+4. 좌측 메뉴 **General**(의존성 그래프 — 이번엔 단일 제품이라 안 뜰 가능성 높음) → **Inputs**(README상 필수 입력 없을 것으로 예상, optional 항목은 기본값 유지) → **Outputs**(설치되면 생길 객체 타입·Action Type·Workshop 앱을 미리 확인) → 우측 상단 **Install**
    - 사전 점검(`THIRD_PARTY_APPLICATION` 없음)은 통과했지만, 다른 이유로 막힐 가능성은 남아있습니다. 막히면 즉시 `NOTES.md`에 기록하고 사용자에게 보고 — 01처럼 우회로를 찾습니다.
+5. 설치 완료 화면에서 "Installation completed successfully" 확인 → **View installation**으로 Outputs overview까지 확인
 
 ---
 
@@ -103,6 +107,8 @@ D:\OneDrive\Cursorhome\aip-practice\
 5. **Automate(있다면)에서 이 흐름이 어떻게 트리거되는지 확인** — 영수증 제출이 자동 승인 로직을 어떻게 발동시키는지
 
 이 5개를 다 보고 나면 "온톨로지 → Action → Function → Workshop → (Automate)"가 실제 화면에서 어떻게 이어지는지 손으로 만져본 게 됩니다.
+
+**개념 기록**: 이 Phase는 `../GLOSSARY.md`의 "Action Type" 항목에 적어둔 "다음에 확인할 것"(정책에 맞으면 AIP Logic이 자동으로, 안 맞으면 사람이 Workshop에서 수동으로 같은 종류의 승인 액션을 호출하는 대칭 구조)을 실측으로 닫는 자리입니다. 확인되면 그 항목을 갱신하세요. 새로 발견한 개념이 있으면 "내 질문/가설 → 확인된 이해" 형식으로 항목을 추가합니다.
 
 ---
 
@@ -133,4 +139,6 @@ README가 스스로 지적한 한계 중 **하나만** 골라 직접 고쳐봅�
 
 - 원본 README: `D:\OneDrive\Cursorhome\aip-community-registry\Expense Reporting\README.md` (사본: `README-original.md`)
 - 상위 로드맵: `../ROADMAP.md` §0.5(압축 트랙), §1 Stage 1 ①
-- 01번 실습 진행 로그(앱 사용법 재사용): `../01-osdk-hello-world/NOTES.md`
+- 마켓플레이스 설치 흐름의 실제 선례: `../ROADMAP.md` §3.5 — Marketplace Getting Started Tutorial (2026-08-30 완주, 01보다 정확)
+- 개념 노트(누적): `../GLOSSARY.md` — 실습 중 새로 확인되는 개념은 이 문서에 "가설 → 이해" 형식으로 추가
+- 01번 실습 진행 로그(SDK/OSDK 관련 함정 재사용): `../01-osdk-hello-world/NOTES.md`
